@@ -5,6 +5,7 @@
 import math
 import matplotlib.pyplot as plt
 import numpy as np
+import sys
 
 def func(x):
     # return x / r2 
@@ -14,27 +15,31 @@ fig = plt.figure()
 ax = fig.add_subplot(projection='3d')
 
 dt = 0.01
-# x = 0.05
-# y = 1e-7
-# alpha = 0.0001
-# beta = 0.05
-# r1 = 2.6
-# r2 = 1e6
-# z = 1e-9
-# c2 = 1e-5
-t = 0
-x = 0.3
-y = 0
-z = 0
 
-alpha  = 15.6;
-beta   = 28; 
-m0     = -1.143;
-m1     = -0.714;
+t = 0
+vals = input("Do you want to use default values? (T/F): ")
+if vals == "T":
+    x = 0.3
+    y = 0
+    z = 0 
+    alpha = 15.6
+    beta = 28
+elif vals == "F": 
+    x = float(input("Input x: "))
+    y = float(input("Input y: "))
+    z = float(input("Input z: "))
+
+    alpha  = float(input("Input alpha: "))
+    beta   = float(input("Input beta: "))
+    m0     = -1.143
+    m1     = -0.714
+else: 
+    raise Exception(f"You entered: {vals}, which is not one of T/F")
 x_arr = []
 y_arr = []
 z_arr = []
-while t < 100:
+limit = sys.float_info.max / 1e3
+while t < 50 or x >  limit or y > limit or z > limit:
     # dx = alpha * (y - x - func(x))
     # dy = (x - y + r1 * z) / (r2 * c2)
     # dz = -1 * beta * y
@@ -49,11 +54,11 @@ while t < 100:
 
  
 
-    h = m1 * x + 0.5 * (m0-m1)* (abs(x+1) -abs(x-1));
+    h = m1 * x + 0.5 * (m0 - m1) * (abs(x + 1) - abs(x - 1))
 
-    xdot = alpha*(y-x-h);
-    ydot = x - y+ z;
-    zdot  = -beta*y;
+    xdot = alpha * (y - x - h)
+    ydot = x - y + z
+    zdot  = - beta * y
 
     x += xdot * dt
     y += ydot * dt
@@ -63,7 +68,7 @@ while t < 100:
     y_arr.append(y)
     z_arr.append(z)
     
-    print(x, y, z, t)
+    # print(x, y, z, t)
         # print(xdot, ydot, zdot)
     
     t += dt
@@ -71,19 +76,3 @@ ax.plot(x_arr, y_arr, z_arr,label='parametric curve')
 plt.show()
 
 
-#g1 = graph()
-#g2 = graph()
-#g3 = graph()
-#m0 = -1.143;
-#m1 = -0.714;
-#x_1 = 0.3
-#y_1 = 0
-#z_1 = 0
-#alpha  = 15.6;
-#beta   = 28;
-#
-#def conversion_function(x):
-#    h = m1 * x + 0.5 * (m0-m1)* (abs(x+1) -abs(x-1))
-#    
-#    
-#while True: 
