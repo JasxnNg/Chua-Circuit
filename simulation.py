@@ -31,6 +31,9 @@ alpha  = 15.6;
 beta   = 28; 
 m0     = -1.143;
 m1     = -0.714;
+x_arr = []
+y_arr = []
+z_arr = []
 while t < 100:
     # dx = alpha * (y - x - func(x))
     # dy = (x - y + r1 * z) / (r2 * c2)
@@ -56,10 +59,31 @@ while t < 100:
     y += ydot * dt
     z += zdot * dt
     # if t % 1 < 0.015:
-    ax.scatter(x, y, z)
+    x_arr.append(x)
+    y_arr.append(y)
+    z_arr.append(z)
+    
     print(x, y, z, t)
         # print(xdot, ydot, zdot)
     
     t += dt
-
+ax.plot(x_arr, y_arr, z_arr,label='parametric curve')
 plt.show()
+
+
+#g1 = graph()
+#g2 = graph()
+#g3 = graph()
+#m0 = -1.143;
+#m1 = -0.714;
+#x_1 = 0.3
+#y_1 = 0
+#z_1 = 0
+#alpha  = 15.6;
+#beta   = 28;
+#
+#def conversion_function(x):
+#    h = m1 * x + 0.5 * (m0-m1)* (abs(x+1) -abs(x-1))
+#    
+#    
+#while True: 
