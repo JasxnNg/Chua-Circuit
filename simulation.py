@@ -24,6 +24,8 @@ if vals == "T":
     z = 0 
     alpha = 15.6
     beta = 28
+    m0     = -1.143
+    m1     = -0.714
 elif vals == "F": 
     x = float(input("Input x: "))
     y = float(input("Input y: "))

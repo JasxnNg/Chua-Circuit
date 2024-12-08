@@ -43,7 +43,7 @@ def random(modulo = 1):
 
 arr = []
 for _ in range(100_000):
-    arr.append(random())
+    arr.append(random(sys.float_info.max / 1e10))
     if _ % 500 == 0:
         print(_)
 
