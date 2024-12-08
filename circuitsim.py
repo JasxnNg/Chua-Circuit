@@ -129,11 +129,6 @@ def clear(b):
     fun_arr[1] = 0
     fun_arr[2] = 0
 
-
-#    g1_g = graph(title = "Graph of x", width = 400, height = 400, align = "right")
-#    g2_g = graph(title = "Graph of y", width = 400, height = 400, align = "right")
-#    g3_g = graph(title = "Graph of z", width = 400, height = 400, align = "right")
-    
 #this is a button to restart (cannot be radio) 
 button(text="Restart", 
        pos=scene.title_anchor, 
@@ -143,58 +138,61 @@ button(text="Restart",
 def do_nothing(ev):
     pass
 
-# this allows you to not fill the surface up 
 def surface_loop_toggle(ev):
-    # If B-field is selected, disable surface and enable loop
-    surface_toggle.disabled = b_toggle.checked
-    loop_toggle.checked = b_toggle.checked
+
+    loop_toggle.checked = not surface_toggle.checked 
+    currSlider.disabled = False 
+    anotherSlider.disabled = False 
     clear() #clears everything else 
 
+def loop_toggle(ev): 
+    surface_toggle.checked = not loop_toggle.checked 
+    currSlider.value = 15.6
+    anotherSlider.value = 28 
+    currSlider.disabled = True
+    anotherSlider.disabled = True
+    wt1.text = '{:1.2f} alpha\n'.format(currSlider.value)
+    wt2.text = '{:1.2f} beta\n'.format(anotherSlider.value)
+    clear()
+
 #--------Define all the buttons that we have----- 
-loop_toggle = radio(
+loop_toggle = checkbox(
     name="default",
-    text="Default Alpha/Beta values",
+    text="Default Values",
     pos=scene.title_anchor,
-    bind=do_nothing,
+    bind= loop_toggle,
     checked=True,
 )
-surface_toggle = radio(
-    name="shape", text="Surface     ", pos=scene.title_anchor, bind=do_nothing
-)
-e_toggle = radio(
-    name="field",
-    text="E-field (red)",
-    pos=scene.title_anchor,
-    bind=surface_loop_toggle,
-    checked=True,
-)
-b_toggle = radio(
-    name="field",
-    text="B-field (blue)     ",
-    pos=scene.title_anchor,
-    bind=surface_loop_toggle,
+surface_toggle = checkbox(
+    name="shape", text=" Unique Values     ", pos=scene.title_anchor, bind= surface_loop_toggle, checked = False 
 )
 
 
        
-
-#function to alter Charge/current (       
+  
 def alteralpha(s): 
-    alpha = s.value * 1e-10 
-    wt.text = '{:1.2f} alpha'.format(s.value) # f-string! to display the values 
+    currSlider.disabled = loop_toggle.checked 
+ 
+    if currSlider.disabled: 
+        s.value = 15.6
+    else:
+        alpha_beta[0] = s.value 
+    wt1.text = '{:1.2f} alpha\n'.format(s.value) # f-string! to display the values 
     clear()
 
-def alterbeta(s): 
-    alpha = s.value * 1e-10 
-    wt.text = '{:1.2f} alpha'.format(s.value) # f-string! to display the values 
+def alterbeta(a): 
+    anotherSlider.disabled = loop_toggle.checked 
+ 
+    if anotherSlider.disabled: 
+        a.value = 28
+    else:
+        alpha_beta[1] = a.value 
+    wt2.text = '{:1.2f} beta\n'.format(a.value) # f-string! to display the values 
     clear()
 
   
 
 #slider to update the value of charge/current 
-currSlider = slider(bind=alteralpha, vertical=False, min= -5.1, max=5.1,step=0.1, value = 1.0, length= 500 ,width=10 )
-
-wt = wtext(text='{:1.2f} alpha'.format(currSlider.value))  #dynamic text! 
 
     
 
@@ -207,7 +205,11 @@ def conversion_function(x_hat):
     return m1 * x_hat + 0.5 * (m0 - m1)* (abs(x_hat + 1 ) - abs(x_hat - 1))
 dt = 0.01
 
+currSlider = slider(bind=alteralpha, min= 0.05, max=20.1,step=0.1, value = 15.6, length= 300 ,width=15, align = "left", pos=scene.caption_anchor, disabled = True )
+wt1 = wtext(text='{:1.2f} alpha\n'.format(currSlider.value))  #dynamic text! 
 
+anotherSlider = slider(bind=alterbeta, min= 0.05, max=30,step=0.1, value = 28, length= 300 ,width=15, align = "left", pos=scene.caption_anchor, disabled = True )
+wt2 = wtext(text='{:1.2f} beta \n'.format(anotherSlider.value))
 while True:
     rate(60)
     x_1 = fun_arr[0]
@@ -230,10 +232,3 @@ while True:
     g3.plot(time_dt[0], z_1) 
     
     time_dt[0] += dt 
-#    print(t)
-    
-#    
-#    
-#while True: 
-
-
