@@ -24,8 +24,6 @@ if vals == "T":
     z = 0 
     alpha = 15.6
     beta = 28
-    m0     = -1.143
-    m1     = -0.714
 elif vals == "F": 
     x = float(input("Input x: "))
     y = float(input("Input y: "))
@@ -33,14 +31,14 @@ elif vals == "F":
 
     alpha  = float(input("Input alpha: "))
     beta   = float(input("Input beta: "))
-    m0     = -1.143
-    m1     = -0.714
 else: 
     raise Exception(f"You entered: {vals}, which is not one of T/F")
 x_arr = []
 y_arr = []
 z_arr = []
 limit = sys.float_info.max / 1e3
+first = -1.143;
+second = -0.714;
 while t < 50 or x >  limit or y > limit or z > limit:
     # dx = alpha * (y - x - func(x))
     # dy = (x - y + r1 * z) / (r2 * c2)
@@ -56,7 +54,7 @@ while t < 50 or x >  limit or y > limit or z > limit:
 
  
 
-    h = m1 * x + 0.5 * (m0 - m1) * (abs(x + 1) - abs(x - 1))
+    h = second * x + 0.5 * (first - second) * (abs(x + 1) - abs(x - 1))
 
     xdot = alpha * (y - x - h)
     ydot = x - y + z

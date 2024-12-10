@@ -3,6 +3,7 @@ import time
 import math
 import sys
 import matplotlib.pyplot as plt
+from scipy.stats import skewtest
 
 val = math.sqrt(3)
 def random(modulo = 1):
@@ -16,21 +17,22 @@ def random(modulo = 1):
     t = 0
     dt = 0.01
 
-    m0 = -1.143;
-    m1 = -0.714;
+    first = -1.143;
+    second = -0.714;
     while t < 50:
 
  
-        h = m1 * x + 0.5 * (m0-m1)* (abs(x+1) -abs(x-1));
+        h = second * x + 0.5 * (first - second) * (abs(x + 1) - abs(x - 1))
 
-        xdot = alpha*(y-x-h);
-        ydot = x - y+ z;
-        zdot  = -beta*y;
+        xdot = alpha * (y - x - h)
+        ydot = x - y + z
+        zdot  = - beta * y
 
         x += xdot * dt
         y += ydot * dt
         z += zdot * dt
-        
+    # if t % 1 < 0.015:
+
         x = x % modulo
         y = y % modulo
         z = z % modulo
@@ -42,12 +44,16 @@ def random(modulo = 1):
     return (x + y + z) / 3
 
 arr = []
-for _ in range(100_000):
-    arr.append(random(sys.float_info.max / 1e10))
+for _ in range(1_000_000):
+    arr.append(random(1))
     if _ % 500 == 0:
         print(_)
 
 fig, ax = plt.subplots()
+
+statistic, p_value = skewtest(arr)
+print("Statistic:", statistic)
+print("P-value:", p_value)
 
 ax.hist(arr, bins=100, linewidth=0.05, edgecolor="white")
 plt.show()
